@@ -8,10 +8,13 @@ import xml.etree.ElementTree as ET
 import re
 import string
 
-#from django.core.management import setup_environ
-#import settings
-#setup_environ(settings)
-#from foo import models
+sys.path.append("../bicingwatch")
+
+
+from django.core.management import setup_environ
+import settings
+setup_environ(settings)
+from bicingwatch.api import models
 
 def parse_options():
     '''parse command line options'''
@@ -23,7 +26,11 @@ def parse_options():
     
     return options
 
-def handle_placemark(placemark):
+def handle_placemark(placemark, ns = ''):
+    descregex = re.compile("<div.*?><div.*?>(.*?)</div><div.*?>.*?</div><div.*?>(\d+)<br />(\d+)", 
+                        re.UNICODE)
+
+    
     description = placemark.findtext('{%s}description' % ns)
     style = placemark.findtext('{%s}styleUrl' % ns)
     coord = placemark.findtext('{%s}Point/{%s}coordinates' % (ns,ns))
@@ -46,10 +53,8 @@ def main():
     tree=ET.parse(options.kml)
     kml=tree.getroot()
 
-    descregex = re.compile("<div.*?><div.*?>(.*?)</div><div.*?>.*?</div><div.*?>(\d+)<br />(\d+)", 
-                           re.UNICODE)
-
     ns = 'http://earth.google.es/kml/2.0'
     for placemark in kml.findall('{%s}Document/{%s}Placemark' % (ns,ns)):
+        handle_placemark(placemark, ns)
 
 main()   
