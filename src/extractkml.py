@@ -4,7 +4,6 @@
 
 import sys
 import re
-
 from optparse import OptionParser
 
 def parse_options():
