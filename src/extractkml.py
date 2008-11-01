@@ -15,7 +15,7 @@ def parse_options():
     parser.add_option("-o", "--output", dest="kml", default="bicing.kml",
               help="write kml to KML")
     
-    (options,) = parser.parse_args()
+    (options, args) = parser.parse_args()
     
     return options
 
