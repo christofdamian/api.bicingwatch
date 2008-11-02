@@ -7,6 +7,7 @@ from optparse import OptionParser
 import xml.etree.ElementTree as ET
 import re
 import string
+import datetime
 
 sys.path.append("../bicingwatch")
 
@@ -36,14 +37,25 @@ def handle_placemark(placemark, ns = ''):
     coord = placemark.findtext('{%s}Point/{%s}coordinates' % (ns,ns))
     
     if style.find("green") >= 0:
-        print "green"
+        status = 'G'
     else:
-        print "red"
+        status = 'R' 
     
     match = re.search(descregex, description)
-    print match.group(1)
-    print match.group(2)
-    print match.group(3)
+    
+    station = models.Station()
+    station.name = match.group(1).replace("\\'","'")
+    [station.x, station.y, ignore] = coord.split(',',2)
+    station.save()
+
+    ping = models.Ping()
+    ping.station = station
+    ping.free = match.group(2)
+    ping.bikes = match.group(3)
+    ping.status = status
+    ping.timestamp = datetime.datetime.now()
+    ping.save()
+
 
 def main():
     '''main script function'''
