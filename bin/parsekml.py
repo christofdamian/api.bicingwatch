@@ -27,7 +27,7 @@ def parse_options():
     
     return options
 
-def handle_placemark(placemark, ns = ''):
+def handle_placemark(placemark, timestamp, ns = ''):
     descregex = re.compile("<div.*?><div.*?>(.*?)</div><div.*?>.*?</div><div.*?>(\d+)<br />(\d+)", 
                         re.UNICODE)
 
@@ -51,7 +51,8 @@ def handle_placemark(placemark, ns = ''):
         station = models.Station()
         station.x = x
         station.y = y
-        
+        station.created = timestamp
+
     station.name = match.group(1).replace("\\'","'")
     station.save()
 
@@ -60,7 +61,7 @@ def handle_placemark(placemark, ns = ''):
     ping.free = match.group(2)
     ping.bikes = match.group(3)
     ping.status = status
-    ping.timestamp = datetime.datetime.now()
+    ping.timestamp = timestamp
     ping.save()
 
 
@@ -71,9 +72,11 @@ def main():
     
     tree=ET.parse(options.kml)
     kml=tree.getroot()
-
+    
+    timestamp = datetime.datetime.now()
+    
     ns = 'http://earth.google.es/kml/2.0'
     for placemark in kml.findall('{%s}Document/{%s}Placemark' % (ns,ns)):
-        handle_placemark(placemark, ns)
+        handle_placemark(placemark, timestamp, ns)
 
 main()   
