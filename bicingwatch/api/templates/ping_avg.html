@@ -1,0 +1,21 @@
+{% extends "base_api.html" %}
+
+{% block content %}
+<h2>Pings</h2>
+
+<table>
+<tr>
+    <th>Bikes</th>
+    <th>Free</th>
+    <th>Hour</th>
+</tr>
+{% for ping in ping_list %}
+    <tr>
+        <td>{{ping.bikes}}</td>
+        <td>{{ping.free}}</td>
+        <td>{{ping.hour}}</td>
+    </tr>
+{% endfor %}
+</table>
+
+{% endblock content %}

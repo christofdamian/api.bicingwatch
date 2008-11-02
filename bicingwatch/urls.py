@@ -9,6 +9,7 @@ urlpatterns = patterns('',
     
     (r'^$', 'bicingwatch.api.views.index'),
     (r'^pings/(.*)$', 'bicingwatch.api.views.pings'),
+    (r'^ping_avg/(.*)$', 'bicingwatch.api.views.ping_avg'),
 
     # Uncomment the admin/doc line below and add 'django.contrib.admindocs' 
     # to INSTALLED_APPS to enable admin documentation:

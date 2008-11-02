@@ -16,5 +16,13 @@ def pings(request, station_id):
     return render_to_response('pings.html', {
         'ping_list': ping_list
     })
+    
+def ping_avg(request, station_id):
+    ping_list = Ping.avg_by_hour(station_id)
+    
+    return render_to_response('ping_avg.html', {
+        'ping_list': ping_list
+    })
+     
 
     
