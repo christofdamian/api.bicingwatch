@@ -6,6 +6,8 @@ admin.autodiscover()
 urlpatterns = patterns('',
     # Example:
     # (r'^bicingwatch/', include('bicingwatch.foo.urls')),
+    
+    (r'^$', 'bicingwatch.api.views.index'),
 
     # Uncomment the admin/doc line below and add 'django.contrib.admindocs' 
     # to INSTALLED_APPS to enable admin documentation:

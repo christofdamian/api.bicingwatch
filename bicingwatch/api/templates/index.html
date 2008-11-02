@@ -1,0 +1,12 @@
+{% extends "base_api.html" %}
+
+{% block content %}
+<h2>Stations</h2>
+
+<ul>
+{% for station in station_list %}
+    <li>{{station.name}} ({{station.number}})</li>
+{% endfor %}
+</ul>
+
+{% endblock content %}

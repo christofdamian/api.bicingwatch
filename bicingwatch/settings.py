@@ -17,6 +17,9 @@ DATABASE_HOST = ''
 DATABASE_PORT = ''         
 DATABASE_CHARSET = 'utf-8'
 
+import os
+PROJECT_PATH = os.path.abspath(os.path.dirname(__file__))
+
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
 # although not all choices may be available on all operating systems.
@@ -70,6 +73,8 @@ TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
+    os.path.join(PROJECT_PATH, 'templates'),
+    os.path.join(PROJECT_PATH, 'api/templates')
 )
 
 INSTALLED_APPS = (
@@ -80,3 +85,4 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     'bicingwatch.api',
 )
+
