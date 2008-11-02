@@ -65,8 +65,8 @@ def handle_placemark(placemark, timestamp, number = None, namespace = ''):
 
     ping = models.Ping()
     ping.station = station
-    ping.free = match.group(2)
-    ping.bikes = match.group(3)
+    ping.bikes = match.group(2)
+    ping.free = match.group(3)
     ping.status = status
     ping.timestamp = timestamp
     ping.save()
