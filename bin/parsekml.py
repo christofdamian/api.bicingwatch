@@ -28,9 +28,12 @@ def parse_options():
 
 def handle_placemark(placemark, timestamp, number = None, namespace = ''):
     '''handle one placemark and write ping and station to database'''
-    descregex = re.compile(
-        "<div.*?><div.*?>(.*?)</div><div.*?>.*?</div><div.*?>(\d+)<br />(\d+)", 
-        re.UNICODE)
+    descregex = re.compile(r'''
+        <div.*?>
+            <div.*?>(.*?)</div>
+            <div.*?>.*?</div>
+            <div.*?>([-\d]+)<br\s*/>([-\d]+)''', 
+        re.UNICODE | re.VERBOSE)
 
     
     description = placemark.findtext('{%s}description' % namespace)
@@ -38,12 +41,12 @@ def handle_placemark(placemark, timestamp, number = None, namespace = ''):
     coord = placemark.findtext(
         '{%s}Point/{%s}coordinates' % (namespace, namespace)
     )
-    
+        
     if style.find("green") >= 0:
         status = models.Ping.STATUS_GREEN
     else:
         status = models.Ping.STATUS_RED 
-    
+        
     match = re.search(descregex, description)
     
     [coord_x, coord_y, ignore] =  coord.split(',', 2)

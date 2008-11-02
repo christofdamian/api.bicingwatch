@@ -27,9 +27,9 @@ class Ping(models.Model):
     )
     
     station = models.ForeignKey(Station)
-    free = models.PositiveSmallIntegerField()
-    bikes = models.PositiveSmallIntegerField()
-    status = models.PositiveSmallIntegerField(
+    free = models.SmallIntegerField()
+    bikes = models.SmallIntegerField()
+    status = models.SmallIntegerField(
         max_length=1, 
         choices = STATUS_CHOICES)
     timestamp = models.DateTimeField()
