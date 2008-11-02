@@ -1,12 +1,11 @@
 #!/bin/env python
 
-import xml
+'''parse bicing kml file and write it to the database'''
+
 import sys
-from xml.dom.ext.reader import Sax2
 from optparse import OptionParser
 import xml.etree.ElementTree as ET
 import re
-import string
 import datetime
 
 sys.path.append("../bicingwatch")
@@ -27,33 +26,38 @@ def parse_options():
     
     return options
 
-def handle_placemark(placemark, timestamp, ns = ''):
-    descregex = re.compile("<div.*?><div.*?>(.*?)</div><div.*?>.*?</div><div.*?>(\d+)<br />(\d+)", 
-                        re.UNICODE)
+def handle_placemark(placemark, timestamp, number = None, namespace = ''):
+    '''handle one placemark and write ping and station to database'''
+    descregex = re.compile(
+        "<div.*?><div.*?>(.*?)</div><div.*?>.*?</div><div.*?>(\d+)<br />(\d+)", 
+        re.UNICODE)
 
     
-    description = placemark.findtext('{%s}description' % ns)
-    style = placemark.findtext('{%s}styleUrl' % ns)
-    coord = placemark.findtext('{%s}Point/{%s}coordinates' % (ns,ns))
+    description = placemark.findtext('{%s}description' % namespace)
+    style = placemark.findtext('{%s}styleUrl' % namespace)
+    coord = placemark.findtext(
+        '{%s}Point/{%s}coordinates' % (namespace, namespace)
+    )
     
     if style.find("green") >= 0:
-        status = 'G'
+        status = models.Ping.STATUS_GREEN
     else:
-        status = 'R' 
+        status = models.Ping.STATUS_RED 
     
     match = re.search(descregex, description)
     
-    [x, y, ignore] =  coord.split(',',2)
+    [coord_x, coord_y, ignore] =  coord.split(',', 2)
     
     try:
-        station = models.Station.objects.get(x = x, y = y)
+        station = models.Station.objects.get(x = coord_x, y = coord_y)
     except models.Station.DoesNotExist:
         station = models.Station()
-        station.x = x
-        station.y = y
+        station.x = coord_x
+        station.y = coord_y
         station.created = timestamp
 
     station.name = match.group(1).replace("\\'","'")
+    station.number = number
     station.save()
 
     ping = models.Ping()
@@ -70,13 +74,17 @@ def main():
     
     options = parse_options()
     
-    tree=ET.parse(options.kml)
-    kml=tree.getroot()
+    tree = ET.parse(options.kml)
+    kml = tree.getroot()
     
     timestamp = datetime.datetime.now()
     
-    ns = 'http://earth.google.es/kml/2.0'
-    for placemark in kml.findall('{%s}Document/{%s}Placemark' % (ns,ns)):
-        handle_placemark(placemark, timestamp, ns)
+    namespace = 'http://earth.google.es/kml/2.0'
+    number = 0
+    for placemark in kml.findall(
+        '{%s}Document/{%s}Placemark' % (namespace, namespace)
+        ):
+        number += 1
+        handle_placemark(placemark, timestamp, number, namespace)
 
 main()   
