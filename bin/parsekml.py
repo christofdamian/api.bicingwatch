@@ -43,9 +43,16 @@ def handle_placemark(placemark, ns = ''):
     
     match = re.search(descregex, description)
     
-    station = models.Station()
+    [x, y, ignore] =  coord.split(',',2)
+    
+    try:
+        station = models.Station.objects.get(x = x, y = y)
+    except models.Station.DoesNotExist:
+        station = models.Station()
+        station.x = x
+        station.y = y
+        
     station.name = match.group(1).replace("\\'","'")
-    [station.x, station.y, ignore] = coord.split(',',2)
     station.save()
 
     ping = models.Ping()
