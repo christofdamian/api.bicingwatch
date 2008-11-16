@@ -1,4 +1,4 @@
-from django.shortcuts import render_to_response
+from django.shortcuts import render_to_response, get_object_or_404
 
 from bicingwatch.api.models import Station, Ping
 
@@ -23,6 +23,13 @@ def ping_avg(request, station_id):
     return render_to_response('ping_avg.html', {
         'ping_list': ping_list
     })
-     
+
+def station(request, station_id):
+    station = get_object_or_404(Station, id=station_id)
+    
+    return render_to_response('station.html', {
+        'station': station                                        
+    })
+         
 
     

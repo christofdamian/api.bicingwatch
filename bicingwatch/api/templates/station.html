@@ -1,0 +1,20 @@
+{% extends "base_api.html" %}
+
+{% block content %}
+<h2>Station #{{station.number}} {{station.name}}</h2>
+
+<p>created: {{station.created}}</p>
+
+<div id="my_chart"></div>
+        
+<script type="text/javascript">
+swfobject.embedSWF(
+    "/images/open-flash-chart.swf", 
+    "my_chart", 
+    "600", "200", 
+    "9.0.0", 
+    "expressInstall.swf",
+    {"data-file":"/data/ping_avg/{{station.id}}"});
+</script>
+
+{% endblock content %}
