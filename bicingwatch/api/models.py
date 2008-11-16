@@ -35,22 +35,14 @@ class Ping(models.Model):
     timestamp = models.DateTimeField()
 
     @staticmethod
-    def avg_by_hour(station_id):
-        """custom sql query to get averages by hour """
+    def __customquery(query , *params):
+        """custom sql query"""
         
         from itertools import *
         from django.db import connection
         
         cursor = connection.cursor()
-        cursor.execute('''
-            select 
-                round(avg(free)) as free,
-                round(avg(bikes)) as bikes,
-                hour(timestamp) as hour 
-            from 
-                ping 
-            where 
-                station_id=%s group by hour''', [station_id])
+        cursor.execute(query , params)
         col_names = [desc[0] for desc in cursor.description]
         while True:
             row = cursor.fetchone()
@@ -59,6 +51,22 @@ class Ping(models.Model):
             row_dict = dict(izip(col_names, row))
             yield row_dict
         return
+
+    @staticmethod
+    def avg_by_hour(station_id,days = [0,1,2,3,4,5,6]):
+        "averages by hour"
+        
+        return Ping.__customquery('''
+            select 
+                round(avg(free)) as free,
+                round(avg(bikes)) as bikes,
+                hour(timestamp) as hour 
+            from 
+                ping 
+            where 
+                station_id=%s 
+                and weekday(timestamp) in %s
+            group by hour''', station_id, days)
 
     class Meta:
         db_table = 'ping'

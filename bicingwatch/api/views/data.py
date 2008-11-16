@@ -3,14 +3,13 @@ from django.http import HttpResponseRedirect,HttpResponse
 import json
     
 from bicingwatch.api.models import Station, Ping
-    
-    
-def ping_avg(request,station_id):
+        
+def __ping_avg(request,station_id,days):
     "json view for avg_by hour"
 
     bikes = []
     free = []
-    for ping in Ping.avg_by_hour(station_id):
+    for ping in Ping.avg_by_hour(station_id,days):
         bikes.append(int(ping['bikes']))
         free.append(int(ping['free']))
     
@@ -40,3 +39,13 @@ def ping_avg(request,station_id):
     
     
     return HttpResponse(json.write(graph))
+
+def ping_avg(request,station_id):
+    return __ping_avg(request,station_id,[0,1,2,3,4,5,6])
+
+def ping_avg_weekday(request,station_id):
+    return __ping_avg(request,station_id,[0,1,2,3,4])
+
+def ping_avg_weekend(request,station_id):
+    return __ping_avg(request,station_id,[5,6])
+

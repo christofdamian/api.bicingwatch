@@ -5,16 +5,30 @@
 
 <p>created: {{station.created}}</p>
 
-<div id="my_chart"></div>
-        
+<h3>Weekday</h3>
+
+<div id="weekday"></div>
 <script type="text/javascript">
 swfobject.embedSWF(
     "/images/open-flash-chart.swf", 
-    "my_chart", 
+    "weekday", 
     "600", "200", 
     "9.0.0", 
     "expressInstall.swf",
-    {"data-file":"/data/ping_avg/{{station.id}}"});
+    {"data-file":"/data/ping_avg_weekday/{{station.id}}"});
+</script>
+
+<h3>Weekend</h3>
+
+<div id="weekend"></div>
+<script type="text/javascript">
+swfobject.embedSWF(
+    "/images/open-flash-chart.swf", 
+    "weekend", 
+    "600", "200", 
+    "9.0.0", 
+    "expressInstall.swf",
+    {"data-file":"/data/ping_avg_weekend/{{station.id}}"});
 </script>
 
 {% endblock content %}
