@@ -54,18 +54,16 @@ def ping_today(request,station_id):
 def stations(request):
     "stations"
 
-    response = HttpResponse(mimetype='text/csv')
-    writer = UnicodeCSV.UnicodeWriter(response)
+    text = '"id","name","number","x","y"'+"\r\n"
     
-    writer.writerow(['id','name','number','x','y'])
+    # couldn't get this one to work with the csv writer and python2.4 so far
     for station in Station.objects.all():
-        writer.writerow([
-                         str(station.id),
-                         station.name,
-                         str(station.number),
-                         str(station.x),
-                         str(station.y)
-                         ])
+        text += ('"'+str(station.id)+'",'+
+                 '"'+station.name+'",'+
+                 '"'+str(station.number)+'",'+
+                 '"'+str(station.x)+'",'+
+                 '"'+str(station.y)+'"'
+                 "\r\n")
   
-    return response
+    return HttpResponse(text, mimetype ='text/csv')
     
