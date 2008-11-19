@@ -18,12 +18,14 @@ def __ping_avg(request,station_id,days):
                 {
                 "colour": "#ff0000",
                 "type": "line_dot",
-                "values": bikes
+                "values": bikes,
+                "text": "bikes",
                 },
               {
                 "type": "line_dot",
                 "colour": "#00ff00",
-                "values": free
+                "values": free,
+                "text": "free"
                 },
                ]
    
@@ -49,3 +51,82 @@ def ping_avg_weekday(request,station_id):
 def ping_avg_weekend(request,station_id):
     return __ping_avg(request,station_id,[5,6])
 
+def ping_last_24_hours(request,station_id):
+    "json view for last 24 hours"
+
+    bikes = []
+    free = []
+    hours = []
+    for ping in Ping.last_24_hours(station_id):
+        bikes.append(int(ping['bikes']))
+        free.append(int(ping['free']))
+        hours.append(str(ping['hour']))
+                     
+    elements = [
+                {
+                "colour": "#ff0000",
+                "type": "line_dot",
+                "values": bikes,
+                "text": "bikes"
+                },
+              {
+                "type": "line_dot",
+                "colour": "#00ff00",
+                "values": free,
+                "text": "free"
+                },
+               ]
+   
+    graph = {
+             "title": { "text": "Average By Hour" },  
+             "elements": elements,
+             "y_axis": {
+                        "min": 0,
+                        "max": 39,
+                        "steps": 3
+                        },
+            "x_axis": {
+                       "labels":  { "labels" : hours },
+                       }
+            }
+    
+    return HttpResponse(json.write(graph))
+
+def ping_today(request,station_id):
+    "json view for today"
+
+    bikes = []
+    free = []
+    for ping in Ping.today(station_id):
+        bikes.append(int(ping['bikes']))
+        free.append(int(ping['free']))
+                     
+    elements = [
+                {
+                "colour": "#ff0000",
+                "type": "line_dot",
+                "values": bikes,
+                "text": "bikes"
+                },
+              {
+                "type": "line_dot",
+                "colour": "#00ff00",
+                "values": free,
+                "text": "free"
+                },
+               ]
+   
+    graph = {
+             "title": { "text": "Average By Hour" },  
+             "elements": elements,
+             "y_axis": {
+                        "min": 0,
+                        "max": 39,
+                        "steps": 3
+                        },
+            "x_axis": {
+                       "labels":  { "labels" : [str(i) for i in range(0,24)] },
+                       }
+            }
+    
+    return HttpResponse(json.write(graph))

@@ -68,6 +68,42 @@ class Ping(models.Model):
                 and weekday(timestamp) in %s
             group by hour''', station_id, days)
 
+    @staticmethod
+    def last_24_hours(station_id):
+        "last 24 hours"
+        
+        return Ping.__customquery('''
+            select 
+                avg(free) as free,
+                avg(bikes) as bikes,
+                hour(timestamp)  as hour 
+            from 
+                ping 
+            where 
+                station_id=%s 
+                and now() <= (timestamp + interval 1 day) 
+            group by hour
+            order by timestamp
+        ''', station_id)
+
+    @staticmethod
+    def today(station_id):
+        "today"
+        
+        return Ping.__customquery('''
+            select 
+                avg(free) as free,
+                avg(bikes) as bikes,
+                hour(timestamp)  as hour 
+            from 
+                ping 
+            where 
+                station_id=%s 
+                and timestamp >= date(now()) 
+            group by hour
+            order by timestamp
+        ''', station_id)
+        
     class Meta:
         db_table = 'ping'
         
