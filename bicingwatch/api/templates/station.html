@@ -1,55 +1,106 @@
 {% extends "base_api.html" %}
 
+{% block head %}
+
+    <script src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=ABQIAAAAAUxgr5RgLev_FqtotvS_oRQfIbdx1koVHH1yoB2ALy11PvexchRJhyyXaNK_xf7XWDEa162h4D78hw"
+            type="text/javascript"></script>
+    <script type="text/javascript">
+    
+    function createMarker(point,html) {
+        var marker = new GMarker(point);
+        GEvent.addListener(marker, "click", function() {
+          marker.openInfoWindowHtml(html);
+        });
+        return marker;
+      }
+    
+    function initialize() {
+      if (GBrowserIsCompatible()) {
+        var map = new GMap2(document.getElementById("map_canvas"));
+        var point = new GLatLng({{ station.y }}, {{ station.x }});
+
+        map.setCenter(point, 15);
+        map.addControl(new GSmallMapControl());
+        map.addControl(new GMapTypeControl());
+
+        map.addOverlay(createMarker(point,"#{{station.number}}<br/>{{station.address}}"));
+      }
+    }
+    
+    </script>
+
+{% endblock head %}
+
+{% block bodytags %}
+    onload="initialize()" 
+    onunload="GUnload()"
+{% endblock bodytags %}
+
 {% block content %}
-<h2>Station #{{station.number}} {{station.name}}</h2>
+<h2>Station #{{station.number}}</h2>
 
-<p>
-    {{station.address}}
+<table>
+    <tr><td>Number</td><td>{{station.number}}</td></tr>
+    <tr><td>Name</td><td>{{station.name}}</td></tr>
+    <tr>
+        <td>Address</td>
+        <td>
+            {{station.address|default:"not set yet"}}
+        </td>
+    </tr>
+    <tr><td>First scraped</td><td>{{station.created}}</td></tr>
+</table>
 
-    (<a href="http://maps.google.com/maps?q={{station.y}},{{station.x}}">
-        Locate on google maps
-    </a>)
-</p>
+<div class="grid">
+    <div class="area">
+        <h3>Google Map</h3>
+        
+        <div id="map_canvas" style="width: 450px; height: 200px"></div>
+    </div>
 
-<p>created: {{station.created}}</p>
+    <div class="area">
+        <h3>Today</h3>
 
-<h3>Today</h3>
+        <div id="today"></div>
+        <script type="text/javascript">
+        swfobject.embedSWF(
+            "/images/open-flash-chart.swf", 
+            "today", 
+            "450", "200", 
+            "9.0.0", 
+            "expressInstall.swf",
+            {"data-file":"../data/ping_today/{{station.id}}"});
+        </script>
+    </div>
 
-<div id="today"></div>
-<script type="text/javascript">
-swfobject.embedSWF(
-    "/images/open-flash-chart.swf", 
-    "today", 
-    "600", "200", 
-    "9.0.0", 
-    "expressInstall.swf",
-    {"data-file":"../data/ping_today/{{station.id}}"});
-</script>
-
-<h3>Weekday</h3>
-
-<div id="weekday"></div>
-<script type="text/javascript">
-swfobject.embedSWF(
-    "/images/open-flash-chart.swf", 
-    "weekday", 
-    "600", "200", 
-    "9.0.0", 
-    "expressInstall.swf",
-    {"data-file":"../data/ping_avg_weekday/{{station.id}}"});
-</script>
-
-<h3>Weekend</h3>
-
-<div id="weekend"></div>
-<script type="text/javascript">
-swfobject.embedSWF(
-    "/images/open-flash-chart.swf", 
-    "weekend", 
-    "600", "200", 
-    "9.0.0", 
-    "expressInstall.swf",
-    {"data-file":"../data/ping_avg_weekend/{{station.id}}"});
-</script>
-
+    <div class="area">
+        <h3>Weekday</h3>
+        
+        <div id="weekday"></div>
+        <script type="text/javascript">
+        swfobject.embedSWF(
+            "/images/open-flash-chart.swf", 
+            "weekday", 
+            "450", "200", 
+            "9.0.0", 
+            "expressInstall.swf",
+            {"data-file":"../data/ping_avg_weekday/{{station.id}}"});
+        </script>
+    </div>
+        
+    <div class="area">
+        <h3>Weekend</h3>
+        
+        <div id="weekend"></div>
+        <script type="text/javascript">
+        swfobject.embedSWF(
+            "/images/open-flash-chart.swf", 
+            "weekend", 
+            "450", "200", 
+            "9.0.0", 
+            "expressInstall.swf",
+            {"data-file":"../data/ping_avg_weekend/{{station.id}}"});
+        </script>
+    </div>
+</div>    
 {% endblock content %}

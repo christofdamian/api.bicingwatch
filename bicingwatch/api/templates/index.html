@@ -9,17 +9,15 @@
     <th>Name</th>
     <th>Address</th>
     <th>Added</th>
-    <th>Actions</th>
 </tr>
 {% for station in station_list %}
     <tr>
-        <td>{{station.number}}</td>
+        <td>
+            <a href="station/{{station.id}}">{{station.number}}</a>
+        </td>
         <td>{{station.name}}</td>
         <td>{{station.address}}</td>
         <td>{{station.created}}</td>
-        <td>
-            <a href="station/{{station.id}}">info</a>      
-        </td>      
     </tr>
 {% endfor %}
 </table>

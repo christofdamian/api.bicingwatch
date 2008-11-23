@@ -20,12 +20,14 @@ def __ping_avg(request,station_id,days):
                 "type": "line_dot",
                 "values": bikes,
                 "text": "bikes",
+                "dot-size": 3,
                 },
               {
                 "type": "line_dot",
                 "colour": "#00ff00",
                 "values": free,
-                "text": "free places"
+                "text": "free places",
+                "dot-size": 3,
                 },
                ]
    
@@ -67,13 +69,15 @@ def ping_last_24_hours(request,station_id):
                 "colour": "#ff0000",
                 "type": "line_dot",
                 "values": bikes,
-                "text": "bikes"
+                "text": "bikes",
+                "dot-size": 3,
                 },
               {
                 "type": "line_dot",
                 "colour": "#00ff00",
                 "values": free,
-                "text": "free places"
+                "text": "free places",
+                "dot-size": 3,
                 },
                ]
    
@@ -106,13 +110,15 @@ def ping_today(request,station_id):
                 "colour": "#ff0000",
                 "type": "line_dot",
                 "values": bikes,
-                "text": "bikes"
+                "text": "bikes",
+                "dot-size": 3,
                 },
               {
                 "type": "line_dot",
                 "colour": "#00ff00",
                 "values": free,
-                "text": "free places"
+                "text": "free places",
+                "dot-size": 3,
                 },
                ]
    
