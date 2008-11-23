@@ -6,6 +6,7 @@ class Station(models.Model):
     x = models.FloatField()
     y = models.FloatField()
     created = models.DateTimeField()
+    address = models.CharField(max_length=200)
     
     class Meta:
         db_table = 'station'

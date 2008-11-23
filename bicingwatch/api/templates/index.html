@@ -5,15 +5,17 @@
 
 <table>
 <tr>
-    <th>Name</th>
     <th>Number</th>
+    <th>Name</th>
+    <th>Address</th>
     <th>Added</th>
     <th>Actions</th>
 </tr>
 {% for station in station_list %}
     <tr>
-        <td>{{station.name}}</td>
         <td>{{station.number}}</td>
+        <td>{{station.name}}</td>
+        <td>{{station.address}}</td>
         <td>{{station.created}}</td>
         <td>
             <a href="station/{{station.id}}">info</a>      
