@@ -54,4 +54,5 @@ def main():
     
     write_kml(options.kml, match.group(1))
 
-main()
+if __name__ == "__main__":
+    main()

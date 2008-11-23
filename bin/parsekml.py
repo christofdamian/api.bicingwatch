@@ -90,4 +90,6 @@ def main():
         number += 1
         handle_placemark(placemark, timestamp, number, namespace)
 
-main()   
+if __name__ == "__main__":
+    main()
+   
