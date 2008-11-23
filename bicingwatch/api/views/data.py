@@ -25,7 +25,7 @@ def __ping_avg(request,station_id,days):
                 "type": "line_dot",
                 "colour": "#00ff00",
                 "values": free,
-                "text": "free"
+                "text": "free places"
                 },
                ]
    
@@ -73,7 +73,7 @@ def ping_last_24_hours(request,station_id):
                 "type": "line_dot",
                 "colour": "#00ff00",
                 "values": free,
-                "text": "free"
+                "text": "free places"
                 },
                ]
    
@@ -112,7 +112,7 @@ def ping_today(request,station_id):
                 "type": "line_dot",
                 "colour": "#00ff00",
                 "values": free,
-                "text": "free"
+                "text": "free places"
                 },
                ]
    

@@ -3,7 +3,13 @@
 {% block content %}
 <h2>Station #{{station.number}} {{station.name}}</h2>
 
-<p>{{station.address}}
+<p>
+    {{station.address}}
+
+    (<a href="http://maps.google.com/maps?q={{station.y}},{{station.x}}">
+        Locate on google maps
+    </a>)
+</p>
 
 <p>created: {{station.created}}</p>
 
