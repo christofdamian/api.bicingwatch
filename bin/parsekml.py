@@ -4,9 +4,16 @@
 
 import sys
 from optparse import OptionParser
-import xml.etree.ElementTree as ET
 import re
 import datetime
+
+try:
+    # Try Python 2.5 and later
+    import xml.etree.ElementTree as ET
+except ImportError:
+    # Older Python 
+    import elementtree.ElementTree as ET
+
 
 sys.path.append("../bicingwatch")
 
@@ -49,7 +56,7 @@ def handle_placemark(placemark, timestamp, number = None, namespace = ''):
         
     match = re.search(descregex, description)
     
-    [coord_x, coord_y, ignore] =  coord.split(',', 2)
+    [coord_x, coord_y, ignore] =  coord.replace('?','').split(',', 2)
     
     try:
         station = models.Station.objects.get(x = coord_x, y = coord_y)
