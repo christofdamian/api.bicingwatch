@@ -31,3 +31,7 @@ td {
 	border-bottom: 1px solid black;
 	border-left: 1px dotted black;
 }
+
+#disqus_thread {
+	clear: both;
+}

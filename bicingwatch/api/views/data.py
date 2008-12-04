@@ -1,9 +1,11 @@
 from django.shortcuts import get_object_or_404, render_to_response
 from django.http import HttpResponseRedirect,HttpResponse
+from django.views.decorators.cache import cache_page
+
 import json
     
 from bicingwatch.api.models import Station, Ping
-        
+
 def __ping_avg(request,station_id,days):
     "json view for avg_by hour"
 
@@ -44,12 +46,15 @@ def __ping_avg(request,station_id,days):
     
     return HttpResponse(json.write(graph))
 
+@cache_page(60*60*24)        
 def ping_avg(request,station_id):
     return __ping_avg(request,station_id,[0,1,2,3,4,5,6])
 
+@cache_page(60*60*24)        
 def ping_avg_weekday(request,station_id):
     return __ping_avg(request,station_id,[0,1,2,3,4])
 
+@cache_page(60*60*24)        
 def ping_avg_weekend(request,station_id):
     return __ping_avg(request,station_id,[5,6])
 

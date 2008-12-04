@@ -10,9 +10,9 @@ ADMINS = (
 MANAGERS = ADMINS
 
 DATABASE_ENGINE = 'mysql' 
-DATABASE_NAME = 'test_bicingwatch'  
-DATABASE_USER = ''         
-DATABASE_PASSWORD = ''     
+DATABASE_NAME = 'bicingwatch'  
+DATABASE_USER = 'cdamian'         
+DATABASE_PASSWORD = '123456'     
 DATABASE_HOST = ''         
 DATABASE_PORT = ''         
 DATABASE_CHARSET = 'utf-8'
@@ -86,3 +86,4 @@ INSTALLED_APPS = (
     'bicingwatch.api',
 )
 
+CACHE_BACKEND = 'memcached://127.0.0.1:11211/'

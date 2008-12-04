@@ -49,7 +49,15 @@
         </td>
     </tr>
     <tr><td>First scraped</td><td>{{station.created}}</td></tr>
+    <tr>
+        <td>Comments</td>
+        <td>
+            <a href="http://api.bicingwatch.com/api/station/{{station.id}}#disqus_thread">View Comments</a>
+        </td>
+    </tr>
 </table>
+
+
 
 <div class="grid">
     <div class="area">
@@ -103,4 +111,22 @@
         </script>
     </div>
 </div>    
+
+<div id="disqus_thread"></div><script type="text/javascript" src="http://disqus.com/forums/bicingwatch/embed.js"></script><noscript><a href="http://bicingwatch.disqus.com/?url=ref">View the discussion thread.</a></noscript><a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
+<script type="text/javascript">
+//<![CDATA[
+(function() {
+var links = document.getElementsByTagName('a');
+var query = '?';
+for(var i = 0; i < links.length; i++) {
+if(links[i].href.indexOf('#disqus_thread') >= 0) {
+query += 'url' + i + '=' + encodeURIComponent(links[i].href) + '&';
+}
+}
+document.write('<script type="text/javascript" src="http://disqus.com/forums/bicingwatch/get_num_replies.js' + query + '"></' + 'script>');
+})();
+//]]>
+</script>
+
 {% endblock content %}
