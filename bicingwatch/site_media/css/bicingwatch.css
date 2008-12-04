@@ -1,0 +1,33 @@
+
+.grid {
+	width: 1015px;
+	clear: both;
+}
+
+.grid .area {
+	width: 460px;
+	height: 220px;
+	float: left;
+	margin: 5px;
+}
+
+.grid .area h3 {
+	padding: 0;
+	margin: 0;
+	height: 20px;
+}
+
+table {
+	border: 1px solid black;
+	border-collapse: collapse;
+}
+
+th {
+	border-bottom: 2px solid black;
+	border-left: 1px dotted black;
+}
+
+td {
+	border-bottom: 1px solid black;
+	border-left: 1px dotted black;
+}
