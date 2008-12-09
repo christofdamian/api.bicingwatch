@@ -1,13 +1,24 @@
 from django.shortcuts import get_object_or_404, render_to_response
 from django.http import HttpResponseRedirect,HttpResponse
 from django.views.decorators.cache import cache_page
+from django.core.cache import cache
 
 import json
     
 from bicingwatch.api.models import Station, Ping
 
+def ping_max(station_id):
+    cache_key = 'ping_max_'+station_id
+    max = cache.get(cache_key)
+    if max == None:
+        max = Ping.max(station_id)
+        cache.set(cache_key,max)
+    return max
+
 def __ping_avg(request,station_id,days):
     "json view for avg_by hour"
+
+    max = ping_max(station_id)
 
     bikes = []
     free = []
@@ -38,13 +49,15 @@ def __ping_avg(request,station_id,days):
              "elements": elements,
              "y_axis": {
                         "min": 0,
-                        "max": 39,
+                        "max": max['max'],
                         "steps": 3
                         }   
              }
     
     
     return HttpResponse(json.write(graph))
+
+
 
 @cache_page(60*60*24)        
 def ping_avg(request,station_id):
@@ -104,39 +117,48 @@ def ping_last_24_hours(request,station_id):
 def ping_today(request,station_id):
     "json view for today"
 
+    max = ping_max(station_id)
+
     bikes = []
     free = []
     for ping in Ping.today(station_id):
-        bikes.append(int(ping['bikes']))
-        free.append(int(ping['free']))
+        bikes.append({
+                     "y": float(ping['bikes']),
+                     "x": float(ping['time'])
+                     })
+        free.append({
+                     "y": float(ping['free']),
+                     "x": float(ping['time'])
+                     })
                      
     elements = [
                 {
                 "colour": "#ff0000",
-                "type": "line_dot",
+                "type": "scatter_line",
                 "values": bikes,
                 "text": "bikes",
-                "dot-size": 3,
+                "dot-size": 1,
                 },
               {
-                "type": "line_dot",
+                "type": "scatter_line",
                 "colour": "#00ff00",
                 "values": free,
                 "text": "free places",
-                "dot-size": 3,
+                "dot-size": 1,
                 },
                ]
    
     graph = {
-             "title": { "text": "Average By Hour" },  
+             "title": { "text": "Average By Half Hour" },  
              "elements": elements,
              "y_axis": {
                         "min": 0,
-                        "max": 39,
+                        "max": max['max'],
                         "steps": 3
                         },
             "x_axis": {
-                       "labels":  { "labels" : [str(i) for i in range(0,24)] },
+                       "min": 0,
+                       "max": 24
                        }
             }
     

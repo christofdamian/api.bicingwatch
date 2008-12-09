@@ -89,22 +89,39 @@ class Ping(models.Model):
 
     @staticmethod
     def today(station_id):
-        "today"
+        "todays free + bikes by time"
         
         return Ping.__customquery('''
             select 
                 avg(free) as free,
                 avg(bikes) as bikes,
-                hour(timestamp)  as hour 
+                hour(timestamp)+floor(minute(timestamp)/30)/2 as time 
             from 
                 ping 
             where 
                 station_id=%s 
                 and timestamp >= date(now()) 
-            group by hour
+            group by time
             order by timestamp
         ''', station_id)
         
+    @staticmethod 
+    def max(station_id):
+        "max bikes and free for station"    
+
+        # TODO: the following is ugly
+        for row in Ping.__customquery('''
+            select 
+                max(free) as free,
+                max(bikes) as bikes,
+                max(free+bikes) as max
+            from 
+                ping 
+            where 
+                station_id=%s 
+        ''', station_id):
+            return row
+                
     class Meta:
         db_table = 'ping'
         
