@@ -121,6 +121,7 @@ def ping_today(request,station_id):
 
     bikes = []
     free = []
+    broken = []
     for ping in Ping.today(station_id):
         bikes.append({
                      "y": float(ping['bikes']),
@@ -130,6 +131,10 @@ def ping_today(request,station_id):
                      "y": float(ping['free']),
                      "x": float(ping['time'])
                      })
+        broken.append({
+                       "y": max['max']-float(ping['bikes'])-float(ping['free']),
+                       "x": float(ping['time'])
+                       })
                      
     elements = [
                 {
@@ -144,6 +149,13 @@ def ping_today(request,station_id):
                 "colour": "#00ff00",
                 "values": free,
                 "text": "free places",
+                "dot-size": 1,
+                },
+              {
+                "type": "scatter_line",
+                "colour": "#000000",
+                "values": broken,
+                "text": "maybe broken",
                 "dot-size": 1,
                 },
                ]
