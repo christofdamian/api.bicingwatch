@@ -12,7 +12,7 @@ def ping_max(station_id):
     max = cache.get(cache_key)
     if max == None:
         max = Ping.max(station_id)
-        cache.set(cache_key,max)
+        cache.set(cache_key,max,60*60*24)
     return max
 
 def __ping_avg(request,station_id,days):
