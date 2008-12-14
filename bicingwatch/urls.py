@@ -12,6 +12,8 @@ urlpatterns = patterns('',
     # (r'^bicingwatch/', include('bicingwatch.foo.urls')),
     
     (r'^$', 'bicingwatch.api.views.index'),
+    (r'^station_list$', 'bicingwatch.api.views.station_list'),
+    (r'^station_map$', 'bicingwatch.api.views.station_map'),
     (r'^station/(.*)$', 'bicingwatch.api.views.station'),
     (r'^pings/(.*)$', 'bicingwatch.api.views.pings'),
     (r'^ping_avg/(.*)$', 'bicingwatch.api.views.ping_avg'),
@@ -28,6 +30,9 @@ urlpatterns = patterns('',
     (r'^text/ping_avg_weekday/(\d+)$', 'bicingwatch.api.views.text.ping_avg_weekday'),
     (r'^text/ping_last_24_hours/(\d+)$', 'bicingwatch.api.views.text.ping_last_24_hours'),
     (r'^text/ping_today/(\d+)$', 'bicingwatch.api.views.text.ping_today'),
+    
+    (r'^kml/all$', 'bicingwatch.api.views.kml.all'),
+    
     
     # Uncomment the admin/doc line below and add 'django.contrib.admindocs' 
     # to INSTALLED_APPS to enable admin documentation:

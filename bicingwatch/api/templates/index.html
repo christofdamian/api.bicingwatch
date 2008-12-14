@@ -1,25 +1,10 @@
 {% extends "base_api.html" %}
 
 {% block content %}
-<h2>Stations</h2>
 
-<table>
-<tr>
-    <th>Number</th>
-    <th>Name</th>
-    <th>Address</th>
-    <th>Added</th>
-</tr>
-{% for station in station_list %}
-    <tr>
-        <td>
-            <a href="station/{{station.id}}">{{station.number}}</a>
-        </td>
-        <td>{{station.name}}</td>
-        <td>{{station.address}}</td>
-        <td>{{station.created}}</td>
-    </tr>
-{% endfor %}
-</table>
+<ul>
+<li><a href="station_list">List of all stations</a></li>
+<li><a href="station_map">Map of all stations</a></li>
+</ul>
 
 {% endblock content %}

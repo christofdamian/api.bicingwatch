@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://earth.google.com/kml/2.1">
+	<Document>
+    	<name>bicingwatch</name>
+		<description>bicingwatch station list</description>    
+	    <Style id="normalPlacemark">
+	      <IconStyle>
+	        <Icon>
+	          <href>http://maps.google.com/mapfiles/kml/paddle/blu-blank.png</href>
+	        </Icon>
+	      </IconStyle>
+	    </Style>
+		{% for station in station_list %}
+    	<Placemark>
+    		<styleUrl>#normalPlacemark</styleUrl>
+    		<Point>
+				<coordinates>{{station.x}},{{station.y}},13</coordinates>
+    		</Point>
+    		<description>
+    			<![CDATA[
+    			<a href="http://api.bicingwatch.com/api/station/{{station.id}}">
+    				#{{station.number}}
+    			</a><br/>
+    			Name: {{station.name}}<br/>
+    			{{station.address}}
+    			]]>
+    		</description>
+    	</Placemark>
+    	{% endfor %}
+	</Document>
+</kml>
