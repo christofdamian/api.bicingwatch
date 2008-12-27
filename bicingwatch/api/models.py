@@ -7,17 +7,18 @@ class Station(models.Model):
     y = models.FloatField()
     created = models.DateTimeField()
     address = models.CharField(max_length=200)
+    numberChecked = models.BooleanField()
     
     class Meta:
         db_table = 'station'
         unique_together = ('x','y')
         
     class Admin:
-        list_display = ('name', 'created')
+        list_display = ('number', 'name', 'created')
         ordering = ('name',)
     
     def __unicode__(self):
-        return self.name
+        return "%d %s" % (self.number, self.name)
     
 class Ping(models.Model):
     STATUS_GREEN = 1

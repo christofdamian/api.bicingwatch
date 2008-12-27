@@ -32,7 +32,17 @@
 <h2>Station #{{station.number}}</h2>
 
 <table>
-    <tr><td>Number</td><td>{{station.number}}</td></tr>
+    <tr>
+    	<td>Number</td>
+    	<td>
+    		{{station.number}}
+    		{% if station.numberChecked %}
+    			(verified)
+    		{% else %}
+    			(unverified)
+    		{% endif %}
+    	</td>
+    </tr>
     <tr><td>Name</td><td>{{station.name}}</td></tr>
     <tr>
         <td>Address</td>
