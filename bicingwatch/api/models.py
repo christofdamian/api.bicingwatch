@@ -68,6 +68,7 @@ class Ping(models.Model):
             where 
                 station_id=%s 
                 and weekday(timestamp) in %s
+                and timestamp >= NOW() - INTERVAL 3 month
             group by hour''', station_id, days)
 
     @staticmethod
@@ -83,7 +84,7 @@ class Ping(models.Model):
                 ping 
             where 
                 station_id=%s 
-                and now() <= (timestamp + interval 1 day) 
+                and timestamp >= NOW() - interval 1 day 
             group by hour
             order by timestamp
         ''', station_id)
@@ -120,6 +121,7 @@ class Ping(models.Model):
                 ping 
             where 
                 station_id=%s 
+                and timestamp >= NOW() - INTERVAL 3 month
         ''', station_id):
             return row
                 
