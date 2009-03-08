@@ -2,19 +2,19 @@
 
 {% block head %}
 
-    <script src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=ABQIAAAAAUxgr5RgLev_FqtotvS_oRQfIbdx1koVHH1yoB2ALy11PvexchRJhyyXaNK_xf7XWDEa162h4D78hw"
+    <script src="http://maps.google.com/maps?file=api&amp;v=2.147&amp;key=ABQIAAAAAUxgr5RgLev_FqtotvS_oRQfIbdx1koVHH1yoB2ALy11PvexchRJhyyXaNK_xf7XWDEa162h4D78hw"
             type="text/javascript"></script>
     <script type="text/javascript">
         
     function initialize() {
       if (GBrowserIsCompatible()) {
         var map = new GMap2(document.getElementById("map_canvas"));
+        map.setUIToDefault();
+
         var point = new GLatLng({{ station.y }}, {{ station.x }});
         var geoXml = new GGeoXml("http://api.bicingwatch.com/api/kml/all");
 
         map.setCenter(point, 15);
-        map.addControl(new GSmallMapControl());
-        map.addControl(new GMapTypeControl());
         map.addOverlay(geoXml); 
       }
     }

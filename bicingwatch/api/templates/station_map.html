@@ -2,20 +2,23 @@
 
 {% block head %}
 
-    <script src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=ABQIAAAAAUxgr5RgLev_FqtotvS_oRQfIbdx1koVHH1yoB2ALy11PvexchRJhyyXaNK_xf7XWDEa162h4D78hw"
+    <script src="http://maps.google.com/maps?file=api&amp;v=2.147&amp;key=ABQIAAAAAUxgr5RgLev_FqtotvS_oRQfIbdx1koVHH1yoB2ALy11PvexchRJhyyXaNK_xf7XWDEa162h4D78hw"
             type="text/javascript"></script>
+    <script src="/js/geoxml.js" type="text/javascript"></script>
     <script type="text/javascript">
+    
+    var exml;
     
     function initialize() {
       if (GBrowserIsCompatible()) {
         var map = new GMap2(document.getElementById("map_canvas"));
-        var geoXml = new GGeoXml("http://api.bicingwatch.com/api/kml/all");
+        map.setUIToDefault();
+
+        exml = new GeoXml("exml", map, "kml/all",{ });
+        exml.parse(); 
         var point = new GLatLng({{centre.y}}, {{centre.x}});
                 
-        map.setCenter(point, 13); 
-        map.addControl(new GSmallMapControl());
-        map.addControl(new GMapTypeControl());
-        map.addOverlay(geoXml); 
+        map.setCenter(point, 1); 
       }
     }
     
@@ -31,6 +34,6 @@
 
 {% block content %}
 
-<div id="map_canvas" style="width: 100%; height: 95%"></div>
+<div id="map_canvas" style="width: 100%; height: 90%"></div>
 
 {% endblock content %}
