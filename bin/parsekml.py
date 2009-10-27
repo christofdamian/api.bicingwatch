@@ -56,8 +56,18 @@ def handle_placemark(placemark, timestamp, number = None, namespace = ''):
         
     match = re.search(descregex, description)
     
-    [coord_x, coord_y, ignore] =  coord.replace('?','').split(',', 2)
+    coord = coord.replace('?','')
     
+    try:
+        [a, b, c, d, e] = coord.split(',')
+        if e > 0:
+            coord = a+'.'+b+','+c+'.'+d+','+e
+    except:
+        pass    
+        
+        
+    [coord_x, coord_y, ignore] =  coord.split(',', 2)
+        
     try:
         station = models.Station.objects.get(x = coord_x, y = coord_y)
     except models.Station.DoesNotExist:

@@ -3,7 +3,7 @@ from django.http import HttpResponseRedirect,HttpResponse
 from django.views.decorators.cache import cache_page
 from django.core.cache import cache
 
-import json
+import simplejson as json
     
 from bicingwatch.api.models import Station, Ping
 
@@ -55,7 +55,7 @@ def __ping_avg(request,station_id,days):
              }
     
     
-    return HttpResponse(json.write(graph))
+    return HttpResponse(json.dumps(graph))
 
 
 
@@ -112,7 +112,7 @@ def ping_last_24_hours(request,station_id):
                        }
             }
     
-    return HttpResponse(json.write(graph))
+    return HttpResponse(json.dumps(graph))
 
 def ping_today(request,station_id):
     "json view for today"
@@ -174,4 +174,24 @@ def ping_today(request,station_id):
                        }
             }
     
-    return HttpResponse(json.write(graph))
+    return HttpResponse(json.dumps(graph))
+
+def stations(request):
+    "json view for stations"
+
+    stations = []
+    i = 0
+    for station in Station.objects.all():
+        stations.append({
+                         "id": station.id,
+                         "number": station.number,
+                         "name": station.name,
+                         "x": station.x,
+                         "y": station.y,
+                         })
+        i = i+1
+        if (i>10):
+            break
+        
+    
+    return HttpResponse("var stations = "+json.dumps(stations)+";")

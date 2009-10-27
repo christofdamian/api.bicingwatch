@@ -23,6 +23,7 @@ urlpatterns = patterns('',
 		(r'^data/ping_avg_weekday/(\d+)$', 'bicingwatch.api.views.data.ping_avg_weekday'),
 		(r'^data/ping_last_24_hours/(\d+)$', 'bicingwatch.api.views.data.ping_last_24_hours'),
 		(r'^data/ping_today/(\d+)$', 'bicingwatch.api.views.data.ping_today'),
+		(r'^data/stations$', 'bicingwatch.api.views.data.stations'),
 
 		(r'^text/stations$', 'bicingwatch.api.views.text.stations'),
 		(r'^text/ping_avg/(\d+)$', 'bicingwatch.api.views.text.ping_avg'),

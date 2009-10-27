@@ -2,33 +2,55 @@
 
 {% block head %}
 
-    <script src="http://maps.google.com/maps?file=api&amp;v=2.147&amp;key=ABQIAAAAAUxgr5RgLev_FqtotvS_oRQfIbdx1koVHH1yoB2ALy11PvexchRJhyyXaNK_xf7XWDEa162h4D78hw"
-            type="text/javascript"></script>
-    <script src="/js/geoxml.js" type="text/javascript"></script>
-    <script type="text/javascript">
-    
-    var exml;
-    
-    function initialize() {
-      if (GBrowserIsCompatible()) {
-        var map = new GMap2(document.getElementById("map_canvas"));
-        map.setUIToDefault();
+		<script src="http://maps.google.com/maps?file=api&amp;v=2.147&amp;key=ABQIAAAAAUxgr5RgLev_FqtotvS_oRQfIbdx1koVHH1yoB2ALy11PvexchRJhyyXaNK_xf7XWDEa162h4D78hw"
+						type="text/javascript"></script>
+		<script src="/js/markerclusterer_packed.js" type="text/javascript"></script>
+		<script type="text/javascript">
 
-        exml = new GeoXml("exml", map, "kml/all",{ });
-        exml.parse(); 
-        var point = new GLatLng({{centre.y}}, {{centre.x}});
-                
-        map.setCenter(point, 1); 
-      }
-    }
-    
-    </script>
+		var stations = {{stations|safe}};
+
+		function createMarker(station) {
+			var latlng = new GLatLng(station.y, station.x);
+			var marker = new GMarker(latlng);
+
+			GEvent.addListener(marker, 'click', function() {
+				marker.openInfoWindowHtml(
+						'<a href="../station/'+station.id+'">'+
+							station.name+'</a><br/>'+
+							station.address
+				);
+			});
+
+			return marker
+		}
+
+		function initialize() {
+			if (GBrowserIsCompatible()) {
+				var map = new GMap2(document.getElementById("map_canvas"));
+				map.setUIToDefault();
+
+				var markers = [];
+				for (var i=0; i<stations.length; i++) {
+						markers.push(createMarker(stations[i]));
+				}
+				var markerCluster = new MarkerClusterer(map, markers, {
+					maxZoom: 16,
+					gridSize: 50
+				});
+
+				var point = new GLatLng({{centre.y}}, {{centre.x}});
+
+				map.setCenter(point, 13);
+			}
+		}
+
+		</script>
 
 {% endblock head %}
 
 {% block bodytags %}
-    onload="initialize()" 
-    onunload="GUnload()"
+		onload="initialize()"
+		onunload="GUnload()"
 {% endblock bodytags %}
 
 
