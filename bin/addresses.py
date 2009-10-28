@@ -21,13 +21,14 @@ def update_address(station):
         station.y, station.x
         )
     f = urllib.urlopen(url) 
-    geo = json.loads(f.read())
+    geo = json.load(f, 'latin-1')
     
     if geo['Status']['code'] != 200:
-        print "code"+str(geo['Status']['code'])
+        print "code "+str(geo['Status']['code'])
+        print " station: ".str(station)
         return
      
-    station.address = unicode(geo['Placemark'][0]['address'],'iso-8859-1')
+    station.address = geo['Placemark'][0]['address']
     station.save()
         
 def main():
@@ -35,12 +36,6 @@ def main():
 
     for station in Station.objects.filter(address = '')[:4]:
         update_address(station)
-        #print "updated %d '%s' address to '%s'" % ( 
-        #                                           station.number,
-        #                                           station.name,
-        #                                           station.address
-        #                                           )
-
         time.sleep(15)
         
 if __name__ == "__main__":

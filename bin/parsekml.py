@@ -58,13 +58,9 @@ def handle_placemark(placemark, timestamp, number = None, namespace = ''):
     
     coord = coord.replace('?','')
     
-    try:
-        [a, b, c, d, e] = coord.split(',')
-        if e > 0:
-            coord = a+'.'+b+','+c+'.'+d+','+e
-    except:
-        pass    
-        
+    # fix comma problem
+    p = re.compile('^(\d+),(\d+),(\d+),(\d+),(\d+)$')
+    coord = p.sub(r'\1.\2,\3.\4,\5', coord)        
         
     [coord_x, coord_y, ignore] =  coord.split(',', 2)
         
@@ -77,6 +73,12 @@ def handle_placemark(placemark, timestamp, number = None, namespace = ''):
         station.created = timestamp
 
     station.name = match.group(1).replace("\\'","'")
+    
+    m = re.match('^(\d+)\s+-\s+(.*)', station.name, re.UNICODE)
+    if m is not None:
+        number = m.group(1)
+        station.name = m.group(2)
+    
     station.number = number
     station.save()
 
